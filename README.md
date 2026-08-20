@@ -1,11 +1,21 @@
 # Stardate Plot
 
-An interactive timeline of every Star Trek film, plotted on two clocks at once:
-the **release date** we could buy a ticket, and the **stardate** spoken in the
+An interactive timeline of every Star Trek film and every season of every Star
+Trek series — 14 films and 48 seasons across 11 series — plotted on two clocks at
+once: the **release date** it reached us, and the **stardate** spoken in the
 captain's log.
+
+Each season is entered at its first episode: the date that episode first aired,
+and the in-universe dating of that episode.
 
 Open `index.html` in any browser. No build step, no dependencies — one
 self-contained file.
+
+## Controls
+
+**Show** switches between films only, TV only, and both together; everything
+downstream — plot, chart, table, ranks — follows the filter. A small icon marks
+each entry as a film (▯ film strip) or a TV season (▭ screen).
 
 ## Three ways to read it
 
@@ -33,17 +43,30 @@ stardate axis behaves so strangely:
 | TNG-era | *Generations* – *Nemesis* | five digits, ~1000 per year, 41000 = 2364 |
 | Kelvin | *Star Trek* (2009) – *Beyond* | calendar year, then day of year |
 
+TOS, TAS and *Discovery*'s first two seasons keep four-digit logs; TNG, DS9,
+*Voyager* and *Lower Decks* keep five-digit ones.
+
 Sorted by raw stardate, the Kelvin films land *below* Kirk's — 2258 is a smaller
 number than 7412 — even though they are set fifteen years earlier and were filmed
 thirty years later.
 
-Two films (*Insurrection* and *Section 31*) never state a stardate on screen.
-Rather than inventing one, they are drawn hollow and dashed, and on the stardate
-axis they drop into a tray below the plot. *Section 31*'s in-universe year is
-likewise never stated; it is shown as `c. 2324`.
+23 of the 62 entries never state a stardate. Rather than inventing one, they are
+drawn hollow and dashed, and on the stardate axis they drop into a tray below the
+plot. A **grey** marker means the production never used stardates at all —
+*Enterprise* refused them outright, and *Picard*, *Prodigy*, *Strange New Worlds*
+and *Discovery*'s 32nd-century seasons followed. A **coloured but hollow** marker
+means the show does keep stardates, but this particular premiere states none
+(*Insurrection*, DS9 season 7).
 
-Stardates are quoted as spoken. Release dates are original US theatrical
-premieres, except *Section 31*, which went straight to Paramount+.
+A year shown as `c.` is inferred from the surrounding story rather than stated on
+screen. Stardates are quoted as spoken. Film release dates are original US
+theatrical premieres, except *Section 31*, which went straight to Paramount+.
+
+The short-film anthologies *Short Treks* and *Very Short Treks* are left out:
+their instalments have no shared season chronology to plot.
+
+Sorting by in-universe year opens a nine-century canyon at the top of the axis,
+where *Discovery*'s last three seasons sit.
 
 ## Notes on the build
 

@@ -89,7 +89,9 @@ h1,h2,h3,.display{font-family:Antonio,"Arial Narrow",Impact,sans-serif; font-wei
 .flip:hover{border-color:var(--line-2); color:var(--ink)}
 .flip .arrow{transition:transform .3s ease}
 .flip[data-dir="desc"] .arrow{transform:rotate(180deg)}
-.legend{display:flex; gap:16px; flex-wrap:wrap; margin-left:auto}
+.legend{display:flex; gap:10px 22px; flex-wrap:wrap; margin-left:auto; align-items:center}
+.legend-group{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+.legend-group + .legend-group{padding-left:22px; border-left:1px solid var(--line)}
 .key{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2); white-space:nowrap}
 .swatch{width:11px; height:11px; border-radius:3px; flex:none}
 .key.hollow .swatch{background:none!important; border:1.5px dashed var(--ink-3)}
@@ -102,7 +104,8 @@ h1,h2,h3,.display{font-family:Antonio,"Arial Narrow",Impact,sans-serif; font-wei
 .work.wide .detail{position:static; max-width:560px}
 
 /* ── plot: axis + displaced cards + leader lines ───────────────────────── */
-.plot{position:relative; --axis-x:74px; --card-x:118px}
+.plot{position:relative; --axis-x:74px; --card-x:118px; --card-h:78px}
+@media (max-width:980px){.plot{--card-h:104px}}
 @media (max-width:560px){.plot{--axis-x:46px; --card-x:76px}}
 .plot .spine{position:absolute; left:var(--axis-x); top:0; bottom:0; width:1px; background:var(--line-2)}
 .plot .leaders{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
@@ -110,7 +113,8 @@ h1,h2,h3,.display{font-family:Antonio,"Arial Narrow",Impact,sans-serif; font-wei
 .plot .leaders path.on{stroke:var(--chrome); stroke-width:2}
 
 .tick{position:absolute; left:0; width:100%; height:0; will-change:transform}
-.tick .rule{position:absolute; left:var(--axis-x); right:0; top:0; border-top:1px dashed var(--line); opacity:.75}
+.tick .rule{position:absolute; left:calc(var(--axis-x) - 5px); top:0;
+  width:calc(var(--card-x) - var(--axis-x) + 1px); border-top:1px solid var(--line-2); opacity:.9}
 .tick .lab{position:absolute; right:calc(100% - var(--axis-x) + 12px); top:-9px;
   font-family:"IBM Plex Mono",monospace; font-size:11px; font-variant-numeric:tabular-nums;
   color:var(--ink-3); white-space:nowrap}
@@ -122,31 +126,42 @@ h1,h2,h3,.display{font-family:Antonio,"Arial Narrow",Impact,sans-serif; font-wei
 .dot.est{background:var(--bg); border:1.5px dashed var(--ink-3); box-shadow:0 0 0 3px var(--bg)}
 .dot.on{transform-origin:center; z-index:5}
 
-.card{position:absolute; left:var(--card-x); right:0; top:0; height:104px; will-change:transform;
+.card{position:absolute; left:var(--card-x); right:0; top:0; height:var(--card-h); will-change:transform;
   background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--c);
   border-radius:4px 10px 10px 4px; padding:12px 16px 12px 15px; cursor:pointer; text-align:left;
-  display:grid; grid-template-columns:38px minmax(0,1fr); gap:0 14px; align-items:center;
+  display:grid; grid-template-columns:34px minmax(0,1fr); gap:0 12px; align-items:center;
   font:inherit; color:inherit; box-shadow:var(--shadow);
   transition:border-color .18s ease, background .18s ease}
 .card.est{border-left-style:dashed}
 .card:hover{border-color:var(--line-2); background:var(--panel-2)}
 .card[aria-pressed="true"]{border-color:var(--chrome); border-left-color:var(--c); background:var(--panel-2)}
-.card .rank{font-family:Antonio,sans-serif; font-size:30px; line-height:1; color:var(--ink-3);
+.card .rank{font-family:Antonio,sans-serif; font-size:26px; line-height:1; color:var(--ink-3);
   font-variant-numeric:tabular-nums; text-align:right; align-self:center}
 .card .body{min-width:0}
-.card .name{font-family:Antonio,sans-serif; font-size:24px; line-height:1.06; text-transform:uppercase;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
+.card .head{display:flex; align-items:center; gap:9px; min-width:0}
+.card .name{font-family:Antonio,sans-serif; font-size:22px; line-height:1.06; text-transform:uppercase;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+.badge{flex:none; font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--c); border:1px solid currentColor; border-radius:999px;
+  padding:1px 8px; opacity:.9}
+.ico-wrap{display:inline-flex; align-items:center; flex:none}
+.ico{display:inline-flex; color:var(--ink-3); flex:none}
+.card .ico{color:var(--c)}
+.sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0}
 .card .name .num{color:var(--c)}
-.stats{display:flex; flex-wrap:wrap; gap:2px 18px; margin-top:7px}
+.stats{display:flex; flex-wrap:wrap; gap:1px 16px; margin-top:5px}
 .stat{display:flex; align-items:baseline; gap:7px; min-width:0}
 .stat .k{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.13em;
   text-transform:uppercase; color:var(--ink-3)}
-.stat .v{font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-variant-numeric:tabular-nums; color:var(--ink)}
+.stat .v{font-family:"IBM Plex Mono",monospace; font-size:13px; font-variant-numeric:tabular-nums; color:var(--ink)}
 .stat .v.dim{color:var(--ink-3)}
-.stat.lead .v{font-size:15px; font-weight:500}
+.stat.lead .v{font-size:14.5px; font-weight:500}
 @media (max-width:560px){
-  .card{height:142px; grid-template-columns:30px minmax(0,1fr); padding:11px 12px}
-  .card .name{font-size:20px; white-space:normal; overflow:visible;
+  .plot{--card-h:150px}
+  .card{grid-template-columns:26px minmax(0,1fr); padding:11px 12px}
+  .card .head{flex-wrap:wrap; gap:5px 8px}
+  .card .name{font-size:19px; white-space:normal; overflow:visible;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical}
 }
 
@@ -154,30 +169,32 @@ h1,h2,h3,.display{font-family:Antonio,"Arial Narrow",Impact,sans-serif; font-wei
 .tray{margin-top:26px; border:1px dashed var(--line-2); border-radius:10px; padding:16px 18px; background:var(--sunken)}
 .tray h3{font-size:19px; text-transform:uppercase; letter-spacing:.04em}
 .tray p{margin:5px 0 13px; color:var(--ink-2); font-size:14px; max-width:62ch}
-.tray ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:9px}
-.tray button{font:inherit; font-size:14px; background:var(--panel); color:var(--ink);
+.tray ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px}
+.tray button{font:inherit; font-size:13.5px; display:inline-flex; align-items:center; gap:7px;
+  background:var(--panel); color:var(--ink);
   border:1px solid var(--line); border-left:3px dashed var(--c); border-radius:4px 8px 8px 4px;
-  padding:7px 13px; cursor:pointer}
+  padding:6px 12px; cursor:pointer}
+.tray button .ico{color:var(--c)}
 .tray button:hover{border-color:var(--line-2)}
 </style>
 <style>
 /* ── compare (paired-rank slopegraph) ──────────────────────────────────── */
 .cmp{position:relative}
-.cmp-heads{display:grid; grid-template-columns:minmax(0,1fr) 132px minmax(0,1fr); gap:0 16px; margin-bottom:14px}
+.cmp-heads{display:grid; grid-template-columns:minmax(0,1fr) 168px minmax(0,1fr); gap:0 16px; margin-bottom:14px}
 .cmp-heads .sel{display:flex; flex-direction:column; gap:6px}
 .cmp-heads .sel:last-of-type{align-items:flex-end; text-align:right}
 select{font-family:Antonio,sans-serif; font-size:21px; text-transform:uppercase; letter-spacing:.03em;
   background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:6px;
   padding:6px 10px; cursor:pointer; max-width:100%}
 .swap{align-self:end; justify-self:center; margin-bottom:6px}
-.cmp-body{position:relative; display:grid; grid-template-columns:minmax(0,1fr) 132px minmax(0,1fr); gap:0 16px}
-.cmp-col{display:flex; flex-direction:column; gap:6px}
+.cmp-body{position:relative; display:grid; grid-template-columns:minmax(0,1fr) 168px minmax(0,1fr); gap:0 16px}
+.cmp-col{display:flex; flex-direction:column; gap:5px}
 .cmp-mid{position:relative}
 .cmp-mid svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
 .cmp-mid path{fill:none; stroke:var(--c); stroke-width:2; opacity:.55; transition:opacity .18s ease, stroke-width .18s ease}
 .cmp-mid path.on{opacity:1; stroke-width:3.5}
 .cmp-mid path.off{opacity:.14}
-.row{display:flex; align-items:center; gap:10px; height:38px; padding:0 12px; background:var(--panel);
+.row{display:flex; align-items:center; gap:9px; height:32px; padding:0 11px; background:var(--panel);
   border:1px solid var(--line); border-radius:4px; cursor:pointer; font:inherit; color:inherit;
   text-align:left; transition:border-color .18s ease, background .18s ease}
 .cmp-col:last-child .row{flex-direction:row-reverse; text-align:right}
@@ -185,19 +202,19 @@ select{font-family:Antonio,sans-serif; font-size:21px; text-transform:uppercase;
 .row.off{opacity:.42}
 .row .pip{width:9px; height:9px; border-radius:50%; background:var(--c); flex:none}
 .row.est .pip{background:none; border:1.5px dashed var(--ink-3)}
-.row .t{font-family:Antonio,sans-serif; font-size:17px; text-transform:uppercase; white-space:nowrap;
+.row .t{font-family:Antonio,sans-serif; font-size:15px; text-transform:uppercase; white-space:nowrap;
   overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0}
 .row .v{font-family:"IBM Plex Mono",monospace; font-size:12px; font-variant-numeric:tabular-nums; color:var(--ink-3); flex:none}
 .cmp-note{margin-top:16px; font-size:14px; color:var(--ink-2); max-width:70ch}
 @media (max-width:700px){
   .cmp-heads,.cmp-body{grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr)}
-  .row{padding:0 8px; gap:7px} .row .t{font-size:14px} .row .v{display:none}
+  .row{padding:0 7px; gap:6px} .row .t{font-size:13px} .row .v{display:none} .row .ico{display:none}
   select{font-size:16px}
 }
 
 /* ── table ─────────────────────────────────────────────────────────────── */
 .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--panel)}
-table{border-collapse:collapse; width:100%; min-width:1010px; font-size:14.5px}
+table{border-collapse:collapse; width:100%; min-width:1120px; font-size:14.5px}
 th,td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap}
 thead th{background:var(--panel-2);
   font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
@@ -214,7 +231,8 @@ tbody tr:hover{background:var(--panel-2)}
 .cell-btn:hover{color:var(--chrome-ink)}
 td.title{font-family:Antonio,sans-serif; font-size:18px; text-transform:uppercase; white-space:normal; min-width:220px}
 td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
-td.sys{font-size:12.5px}
+td.sys,td.kind{font-size:12.5px}
+td.dim{color:var(--ink-3)}
 .chip{display:inline-flex; align-items:center; gap:6px; color:var(--ink-2)}
 .chip .swatch{width:9px; height:9px}
 .chip.est .swatch{background:none!important; border:1.5px dashed var(--ink-3)}
@@ -271,9 +289,9 @@ footer a{color:var(--ink-2)}
   <header class="masthead">
     <div class="rail" aria-hidden="true"></div>
     <div>
-      <p class="eyebrow">Fourteen films &middot; two clocks</p>
+      <p class="eyebrow"><span id="count-films">14</span> films &middot; <span id="count-seasons">48</span> seasons across <span id="count-series">11</span> series &middot; two clocks</p>
       <h1>Stardate<br>Plot</h1>
-      <p class="lede">Star Trek keeps time twice. There is the date we could <em>buy a ticket</em>, and the stardate in the <em>captain's log</em> &mdash; and the two run in different directions, at different speeds, in three incompatible numbering systems. Pick a clock and watch the films rearrange.</p>
+      <p class="lede">Star Trek keeps time twice. There is the date it <em>reached us</em> &mdash; a premiere, an opening weekend &mdash; and the stardate in the <em>captain's log</em>. The two run in different directions, at different speeds, in three incompatible numbering systems, and a good third of the franchise gave up on stardates entirely. Every film and every season of every series is here. Pick a clock and watch them rearrange.</p>
     </div>
   </header>
 
@@ -283,6 +301,15 @@ footer a{color:var(--ink-2)}
         <button class="tab" role="tab" id="tab-plot" aria-controls="view-plot" aria-selected="true">Plot</button>
         <button class="tab" role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare</button>
         <button class="tab" role="tab" id="tab-table" aria-controls="view-table" aria-selected="false">Table</button>
+      </div>
+
+      <div class="field" id="ctl-medium">
+        <span class="eyebrow">Show</span>
+        <div class="seg" role="group" aria-label="Which entries to show">
+          <button data-medium="both" aria-pressed="true">Both</button>
+          <button data-medium="film" aria-pressed="false">Films</button>
+          <button data-medium="tv" aria-pressed="false">TV</button>
+        </div>
       </div>
 
       <div class="field" id="ctl-scale">
@@ -349,7 +376,7 @@ footer a{color:var(--ink-2)}
       </section>
 
       <section id="view-table" role="tabpanel" aria-labelledby="tab-table" hidden>
-        <p class="eyebrow" style="margin:0 0 10px">Click any heading to sort</p>
+        <p class="eyebrow" style="margin:0 0 10px">Click any heading to sort &middot; <span id="table-count"></span></p>
         <div class="tablewrap">
           <table>
             <thead><tr id="thead-row"></tr></thead>
@@ -363,17 +390,18 @@ footer a{color:var(--ink-2)}
   </div>
 
   <footer>
-    <p>Stardates are quoted from the log entries spoken on screen; where a film never states one, the entry is drawn hollow and dashed rather than guessed at. In&#8209;universe years follow the dating established across the franchise. Release dates are the original US theatrical premieres, except <em>Section&nbsp;31</em>, which went straight to Paramount+.</p>
+    <p>Every season is entered at its first episode: the date that episode first aired, and the in&#8209;universe dating of that episode. Stardates are quoted from log entries spoken on screen &mdash; where a premiere never states one, the entry is drawn hollow and dashed rather than guessed at, and a grey marker means the production never used stardates at all. A year shown as <em>c.</em> is inferred from the surrounding story rather than stated. Film release dates are original US theatrical premieres, except <em>Section&nbsp;31</em>, which went straight to Paramount+. The short-film anthologies <em>Short Treks</em> and <em>Very Short Treks</em> are left out: their instalments have no shared season chronology to plot.</p>
   </footer>
 </div>
 <script>
-/* ── the films ─────────────────────────────────────────────────────────── */
+/* ── stardate numbering systems ────────────────────────────────────────── */
 const SYSTEMS = {
   tos:    {label:"TOS-era log", hint:"Four digits, no fixed rate", varname:"--sys-tos"},
   tng:    {label:"TNG-era log", hint:"Five digits, ~1000 per year", varname:"--sys-tng"},
   kelvin: {label:"Kelvin log",  hint:"Year, then day of year", varname:"--sys-kelvin"}
 };
 
+/* ── the films ─────────────────────────────────────────────────────────── */
 const FILMS = [
   {id:"tmp", num:"I", title:"The Motion Picture", release:"1979-12-07", stardate:7412.6, year:2273,
    sys:"tos", crew:"Kirk / Enterprise", director:"Robert Wise",
@@ -426,11 +454,145 @@ const FILMS = [
    blurb:"Emperor Philippa Georgiou is pulled back into Starfleet's black-ops division to stop a weapon out of her Terran past."}
 ];
 
+/* ── the series, one row per season ────────────────────────────────────────
+   Each season carries the air date of its first episode and the in-universe
+   dating of that episode. A stardate is recorded only where the premiere
+   actually speaks one; sys:null marks a production that never used them.   */
+const SERIES = [
+  {id:"tos", abbr:"TOS", title:"The Original Series", crew:"Kirk / Enterprise", sys:"tos",
+   blurb:"Kirk's five-year mission, and the show the rest of it grew out of.",
+   seasons:[
+     {n:1, release:"1966-09-08", premiere:"The Man Trap",   stardate:1513.1, year:2266},
+     {n:2, release:"1967-09-15", premiere:"Amok Time",      stardate:3372.7, year:2267},
+     {n:3, release:"1968-09-20", premiere:"Spock's Brain",  stardate:5431.4, year:2268}
+   ]},
+  {id:"tas", abbr:"TAS", title:"The Animated Series", crew:"Kirk / Enterprise", sys:"tos",
+   blurb:"The original cast returns in animation, freed from a live-action budget.",
+   seasons:[
+     {n:1, release:"1973-09-08", premiere:"Beyond the Farthest Star", stardate:5221.3, year:2269},
+     {n:2, release:"1974-09-07", premiere:"The Pirates of Orion",     stardate:6334.1, year:2270}
+   ]},
+  {id:"tng", abbr:"TNG", title:"The Next Generation", crew:"Picard / Enterprise-D", sys:"tng",
+   blurb:"A new Enterprise, a new century, and a captain who would rather negotiate than shoot.",
+   seasons:[
+     {n:1, release:"1987-09-28", premiere:"Encounter at Farpoint",          stardate:41153.7, year:2364},
+     {n:2, release:"1988-11-21", premiere:"The Child",                      stardate:42073.1, year:2365},
+     {n:3, release:"1989-09-25", premiere:"Evolution",                      stardate:43125.8, year:2366},
+     {n:4, release:"1990-09-24", premiere:"The Best of Both Worlds, Part II",stardate:44001.4, year:2367},
+     {n:5, release:"1991-09-23", premiere:"Redemption II",                  stardate:45020.4, year:2368},
+     {n:6, release:"1992-09-21", premiere:"Time's Arrow, Part II",          stardate:46001.3, year:2369},
+     {n:7, release:"1993-09-20", premiere:"Descent, Part II",               stardate:47025.4, year:2370}
+   ]},
+  {id:"ds9", abbr:"DS9", title:"Deep Space Nine", crew:"Sisko / Deep Space 9", sys:"tng",
+   blurb:"A station beside a wormhole, a long war, and the serialised show Trek said it would never make.",
+   seasons:[
+     {n:1, release:"1993-01-03", premiere:"Emissary",              stardate:46379.1, year:2369},
+     {n:2, release:"1993-09-27", premiere:"The Homecoming",        stardate:47391.2, year:2370},
+     {n:3, release:"1994-09-26", premiere:"The Search, Part I",    stardate:48213.1, year:2371},
+     {n:4, release:"1995-10-02", premiere:"The Way of the Warrior",stardate:49011.4, year:2372},
+     {n:5, release:"1996-09-30", premiere:"Apocalypse Rising",     stardate:50083.6, year:2373},
+     {n:6, release:"1997-09-29", premiere:"A Time to Stand",       stardate:51145.3, year:2374},
+     {n:7, release:"1998-09-30", premiere:"Image in the Sand",     stardate:null,    year:2375,
+      sdNote:"The premiere states no stardate, though the series otherwise keeps five-digit logs."}
+   ]},
+  {id:"voy", abbr:"VOY", title:"Voyager", crew:"Janeway / Voyager", sys:"tng",
+   blurb:"A starship flung seventy thousand light years from home, with two crews forced into one.",
+   seasons:[
+     {n:1, release:"1995-01-16", premiere:"Caretaker",                 stardate:48315.6, year:2371},
+     {n:2, release:"1995-08-28", premiere:"The 37's",                  stardate:48975.1, year:2371},
+     {n:3, release:"1996-09-04", premiere:"Basics, Part II",           stardate:50032.7, year:2373},
+     {n:4, release:"1997-09-03", premiere:"Scorpion, Part II",         stardate:51003.7, year:2374},
+     {n:5, release:"1998-10-14", premiere:"Night",                     stardate:52081.2, year:2375},
+     {n:6, release:"1999-09-22", premiere:"Equinox, Part II",          stardate:53049.2, year:2376},
+     {n:7, release:"2000-10-04", premiere:"Unimatrix Zero, Part II",   stardate:54014.4, year:2377}
+   ]},
+  {id:"ent", abbr:"ENT", title:"Enterprise", crew:"Archer / Enterprise NX-01", sys:null,
+   blurb:"A century before Kirk, humanity's first warp-five ship feels its way out of the solar system.",
+   sdNote:"Enterprise deliberately avoided stardates; its logs are given as calendar dates.",
+   seasons:[
+     {n:1, release:"2001-09-26", premiere:"Broken Bow",          year:2151},
+     {n:2, release:"2002-09-18", premiere:"Shockwave, Part II",  year:2152},
+     {n:3, release:"2003-09-10", premiere:"The Xindi",           year:2153},
+     {n:4, release:"2004-10-08", premiere:"Storm Front",         year:2154}
+   ]},
+  {id:"dis", abbr:"DIS", title:"Discovery", crew:"Burnham / Discovery", sys:null,
+   blurb:"Burnham's war with the Klingons, and then a leap nine hundred years forward into a Federation that has all but collapsed.",
+   seasons:[
+     {n:1, release:"2017-09-24", premiere:"The Vulcan Hello",         stardate:1207.3, year:2256, sys:"tos"},
+     {n:2, release:"2019-01-17", premiere:"Brother",                  year:2257, sys:"tos",
+      sdNote:"The premiere states no stardate; the season's logs stay in the four-digit era."},
+     {n:3, release:"2020-10-15", premiere:"That Hope Is You, Part 1", year:3188,
+      sdNote:"From here the series is nine centuries downstream and drops stardates entirely."},
+     {n:4, release:"2021-11-18", premiere:"Kobayashi Maru",           year:3190},
+     {n:5, release:"2024-04-04", premiere:"Red Directive",            year:3191}
+   ]},
+  {id:"pic", abbr:"PIC", title:"Picard", crew:"Picard / La Sirena & Titan", sys:null,
+   blurb:"Retirement does not take. Picard goes back out, first with strangers, then with his old crew.",
+   sdNote:"The series dates its story by calendar year rather than by log stardate.",
+   seasons:[
+     {n:1, release:"2020-01-23", premiere:"Remembrance",         year:2399},
+     {n:2, release:"2022-03-03", premiere:"The Star Gazer",      year:2401},
+     {n:3, release:"2023-02-16", premiere:"The Next Generation", year:2401}
+   ]},
+  {id:"ld", abbr:"LD", title:"Lower Decks", crew:"Mariner / Cerritos", sys:"tng",
+   blurb:"The support crew on a second-contact ship, animated and talking very fast.",
+   seasons:[
+     {n:1, release:"2020-08-06", premiere:"Second Contact",  stardate:57436.2, year:2380},
+     {n:2, release:"2021-08-12", premiere:"Strange Energies", year:2381},
+     {n:3, release:"2022-08-25", premiere:"Grounded",         year:2381},
+     {n:4, release:"2023-09-07", premiere:"Twovix",           year:2381},
+     {n:5, release:"2024-10-24", premiere:"Dos Cerritos",     year:2381, yearApprox:true,
+      yearNote:"The season runs on from the last without a stated date."}
+   ]},
+  {id:"pro", abbr:"PRO", title:"Prodigy", crew:"Dal & Gwyn / Protostar", sys:null,
+   blurb:"Alien kids steal a derelict Starfleet ship and work out, slowly, what the Federation is.",
+   sdNote:"Prodigy dates its story by calendar year rather than by log stardate.",
+   seasons:[
+     {n:1, release:"2021-10-28", premiere:"Lost and Found",         year:2383},
+     {n:2, release:"2024-07-01", premiere:"Into the Breach, Part I", year:2384, yearApprox:true,
+      yearNote:"The season opens shortly after the first and travels in time from there."}
+   ]},
+  {id:"snw", abbr:"SNW", title:"Strange New Worlds", crew:"Pike / Enterprise", sys:null,
+   blurb:"Pike's Enterprise in the decade before Kirk, back to one story an episode.",
+   sdNote:"The series rarely opens on a log entry, and its premieres state no stardate.",
+   seasons:[
+     {n:1, release:"2022-05-05", premiere:"Strange New Worlds", year:2259},
+     {n:2, release:"2023-06-15", premiere:"The Broken Circle",  year:2259},
+     {n:3, release:"2025-07-17", premiere:"Hegemony, Part II",  year:2259, yearApprox:true,
+      yearNote:"The premiere picks up mid-crisis from the previous finale, with no fresh date given."}
+   ]}
+];
+
+/* films and seasons flattened into one list of plottable entries */
+const ENTRIES = [
+  ...FILMS.map(f => ({...f, kind:"film"})),
+  ...SERIES.flatMap(s => s.seasons.map(sn => ({
+    id: `${s.id}-s${sn.n}`, kind:"tv",
+    title: s.title, abbr: s.abbr, series: s.id, season: sn.n, premiere: sn.premiere,
+    release: sn.release,
+    stardate: sn.stardate ?? null,
+    sys: sn.sys !== undefined ? sn.sys : s.sys,
+    year: sn.year, yearApprox: sn.yearApprox, yearNote: sn.yearNote,
+    sdNote: sn.sdNote ?? s.sdNote,
+    crew: s.crew, blurb: s.blurb
+  })))
+];
+
 const SCALES = {
-  release:  {label:"Release date",     short:"Released",  unit:""},
-  stardate: {label:"Stardate",         short:"Stardate",  unit:""},
-  universe: {label:"In-universe year", short:"In-universe", unit:""}
+  release:  {label:"Release date",     short:"Released"},
+  stardate: {label:"Stardate",         short:"Stardate"},
+  universe: {label:"In-universe year", short:"In-universe"}
 };
+
+const ICONS = {
+  film:`<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">
+    <rect x="1.6" y="3.2" width="12.8" height="9.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/>
+    <path d="M4.9 3.4v9.2M11.1 3.4v9.2" stroke="currentColor" stroke-width="1.1"/></svg>`,
+  tv:`<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">
+    <rect x="1.6" y="2.9" width="12.8" height="8.4" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/>
+    <path d="M8 11.4v2M5.4 13.6h5.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`
+};
+const KIND_LABEL = {film:"Film", tv:"TV"};
 </script>
 <script>
 (() => {
@@ -445,25 +607,38 @@ const fmtStardate = v => v == null ? "—" : Number.isInteger(v) ? v.toFixed(1) 
 const stamp = iso => Date.parse(iso + "T00:00:00Z");
 const value = (f, scale) => scale === "release" ? stamp(f.release) : scale === "stardate" ? f.stardate : f.year;
 const approx = (f, scale) => scale === "universe" && !!f.yearApprox;
-const placed = scale => FILMS.filter(f => value(f, scale) != null);
-const unplaced = scale => FILMS.filter(f => value(f, scale) == null);
-const hue = f => `var(${SYSTEMS[f.sys].varname})`;
+const hue = f => f.sys ? `var(${SYSTEMS[f.sys].varname})` : "var(--ink-3)";
+const seasonTag = f => f.kind === "tv" ? "S" + f.season : "";
 
 const state = {
-  view: "plot", scale: "release", space: "scaled", dir: "asc",
+  view: "plot", medium: "both", scale: "release", space: "scaled", dir: "asc",
   selected: null, cmpA: "release", cmpB: "universe",
   sortKey: "release", sortDir: "asc"
 };
 
-/* ── ordering ──────────────────────────────────────────────────────────── */
+/* ── the working set: medium filter, then the chosen clock ─────────────── */
+const inMedium = f => state.medium === "both" || f.kind === state.medium;
+const pool = () => ENTRIES.filter(inMedium);
+const placed = scale => pool().filter(f => value(f, scale) != null);
+const unplaced = scale => pool().filter(f => value(f, scale) == null);
+const byScale = scale => (a, b) => (value(a, scale) - value(b, scale)) || (stamp(a.release) - stamp(b.release));
+
 function ordered(scale, dir) {
-  const list = placed(scale).slice().sort((a, b) => value(a, scale) - value(b, scale));
+  const list = placed(scale).sort(byScale(scale));
   return dir === "desc" ? list.reverse() : list;
 }
 function rankMap(scale) {
   const m = new Map();
-  ordered(scale, "asc").forEach((f, i) => m.set(f.id, i + 1));
+  placed(scale).sort(byScale(scale)).forEach((f, i) => m.set(f.id, i + 1));
   return m;
+}
+
+function icon(f) {
+  const s = el("span", "ico");
+  s.innerHTML = ICONS[f.kind];
+  const sr = el("span", "sr"); sr.textContent = KIND_LABEL[f.kind] + " · ";
+  const w = el("span", "ico-wrap"); w.append(sr, s);
+  return w;
 }
 
 /* ── starfield ─────────────────────────────────────────────────────────── */
@@ -490,30 +665,42 @@ function drawStars() {
 /* ── legend ────────────────────────────────────────────────────────────── */
 function buildLegend() {
   const wrap = $("#legend"); wrap.textContent = "";
-  for (const [key, s] of Object.entries(SYSTEMS)) {
+  const group = el("div", "legend-group");
+  for (const [, s] of Object.entries(SYSTEMS)) {
     const k = el("span", "key"), sw = el("span", "swatch");
     sw.style.background = `var(${s.varname})`;
     k.append(sw, document.createTextNode(s.label));
     k.title = s.hint;
-    wrap.appendChild(k);
+    group.appendChild(k);
   }
   const k = el("span", "key hollow");
   k.append(el("span", "swatch"), document.createTextNode("No stardate stated"));
-  wrap.appendChild(k);
+  k.title = "Drawn hollow and dashed. Grey means the production never used stardates at all.";
+  group.appendChild(k);
+
+  const kinds = el("div", "legend-group");
+  for (const kind of ["film", "tv"]) {
+    const key = el("span", "key");
+    const ic = el("span", "ico"); ic.innerHTML = ICONS[kind];
+    key.append(ic, document.createTextNode(kind === "film" ? "Film" : "TV season"));
+    kinds.appendChild(key);
+  }
+  wrap.append(group, kinds);
 }
 
 /* ── plot ──────────────────────────────────────────────────────────────── */
 const plot = $("#plot"), marksBox = $("#marks"), ticksBox = $("#ticks"), leaders = $("#leaders");
-const nodes = new Map();          // id -> {dot, card}
-const anim  = new Map();          // id -> {dotY, cardY}  (current, animated)
-let raf = 0;
+const nodes = new Map();      // id -> {dot, card, rank}
+const paths = new Map();      // id -> <path>
+const anim  = new Map();      // id -> {dotY, cardY} — the animated values
+let raf = 0, plotW = 0, plotH = 0, axisX = 0, cardX = 0;
 
-function cardH() { return innerWidth <= 560 ? 142 : 104; }
-const GAP = 14;
+const cardH = () => parseFloat(getComputedStyle(plot).getPropertyValue("--card-h")) || 78;
+const GAP = 12;
 
 function buildCards() {
-  marksBox.textContent = ""; nodes.clear();
-  for (const f of FILMS) {
+  marksBox.textContent = ""; nodes.clear(); paths.clear(); leaders.textContent = "";
+  for (const f of ENTRIES) {
     const dot = el("div", "dot");
     dot.style.setProperty("--c", hue(f));
 
@@ -524,13 +711,22 @@ function buildCards() {
 
     const rank = el("span", "rank");
     const body = el("div", "body");
+    const head = el("div", "head");
     const name = el("span", "name");
-    const numSpan = el("span", "num"); numSpan.textContent = f.num === "—" ? "" : f.num + " ";
-    name.append(numSpan, document.createTextNode(f.title));
+    if (f.kind === "film" && f.num !== "—") {
+      const numSpan = el("span", "num"); numSpan.textContent = f.num + " ";
+      name.appendChild(numSpan);
+    }
+    name.appendChild(document.createTextNode(f.title));
+    head.append(icon(f), name);
+    if (f.kind === "tv") {
+      const badge = el("span", "badge"); badge.textContent = "Season " + f.season;
+      head.appendChild(badge);
+    }
 
     const stats = el("div", "stats");
     const mk = (k, v, cls) => {
-      const s = el("div", "stat" + (cls ? " " + cls : ""));
+      const s = el("div", "stat " + cls);
       const kk = el("span", "k"); kk.textContent = k;
       const vv = el("span", "v"); vv.textContent = v;
       if (v === "—") vv.classList.add("dim");
@@ -541,7 +737,7 @@ function buildCards() {
       mk("Stardate", fmtStardate(f.stardate), "s-stardate"),
       mk("In-universe", (f.yearApprox ? "c. " : "") + f.year, "s-universe")
     );
-    body.append(name, stats);
+    body.append(head, stats);
     card.append(rank, body);
     card.addEventListener("click", () => select(f.id === state.selected ? null : f.id));
     card.addEventListener("mouseenter", () => highlight(f.id, true));
@@ -550,33 +746,40 @@ function buildCards() {
     dot.addEventListener("mouseleave", () => highlight(f.id, false));
 
     marksBox.append(dot, card);
-    nodes.set(f.id, { dot, card, rank, name });
+    nodes.set(f.id, { dot, card, rank });
   }
 }
+
+/* tick steps chosen so any filtered range lands on ~10 readable gridlines */
+const STEPS = [1,2,5,10,20,25,50,100,200,250,500,1000,2000,2500,5000,10000,20000,25000,50000];
+const niceStep = (range, target) => STEPS.find(s => s >= range / target) || STEPS[STEPS.length - 1];
 
 function tickSpec(scale, min, max) {
   const out = [];
   if (scale === "release") {
     const y0 = new Date(min).getUTCFullYear(), y1 = new Date(max).getUTCFullYear();
-    for (let y = Math.ceil(y0 / 5) * 5; y <= y1; y += 5) out.push([stamp(`${y}-01-01`), String(y)]);
-  } else if (scale === "stardate") {
-    for (let v = 10000; v <= max; v += 10000) out.push([v, String(v)]);
+    const step = niceStep(y1 - y0 || 1, 12);
+    for (let y = Math.ceil(y0 / step) * step; y <= y1; y += step) {
+      const v = stamp(`${y}-01-01`);
+      if (v >= min && v <= max) out.push([v, String(y)]);
+    }
   } else {
-    for (let y = Math.ceil(min / 20) * 20; y <= max; y += 20) out.push([y, String(y)]);
+    const step = niceStep(max - min || 1, 12);
+    for (let v = Math.ceil(min / step) * step; v <= max; v += step) out.push([v, String(v)]);
   }
-  return out.filter(([v]) => v >= min && v <= max);
+  return out;
 }
 
 function layoutPlot(animate = true) {
   const list = ordered(state.scale, state.dir);
   const shown = new Set(list.map(f => f.id));
   const CH = cardH(), STEP = CH + GAP, n = list.length;
-  const H = state.space === "even" ? n * STEP : Math.max(n * STEP * 1.35, 1500);
+  const spread = n > 40 ? 1.1 : n > 20 ? 1.2 : 1.35;
+  const H = state.space === "even" ? Math.max(n * STEP, 1) : Math.max(n * STEP * spread, 1200);
   const pad = CH / 2 + 8;
   const vals = list.map(f => value(f, state.scale));
   const min = Math.min(...vals), max = Math.max(...vals), span = (max - min) || 1;
 
-  // true position on the axis
   const dotY = list.map(f => {
     if (state.space === "even") return 0;
     let t = (value(f, state.scale) - min) / span;
@@ -584,7 +787,6 @@ function layoutPlot(animate = true) {
     return pad + t * (H - 2 * pad);
   });
 
-  // card placement: start centred on the dot, then sweep apart
   const cardY = new Array(n);
   if (state.space === "even") {
     for (let i = 0; i < n; i++) { cardY[i] = i * STEP; dotY[i] = cardY[i] + CH / 2; }
@@ -599,20 +801,16 @@ function layoutPlot(animate = true) {
     const last = idx[idx.length - 1];
     if (cardY[last] > H - CH) {
       cardY[last] = H - CH;
-      for (let k = idx.length - 2; k >= 0; k--) {
-        const i = idx[k], nx = idx[k + 1];
-        cardY[i] = Math.min(cardY[i], cardY[nx] - STEP);
-      }
+      for (let k = idx.length - 2; k >= 0; k--) cardY[idx[k]] = Math.min(cardY[idx[k]], cardY[idx[k + 1]] - STEP);
     }
   }
 
-  const bottom = Math.max(H, ...cardY.map(y => y + CH));
+  const bottom = n ? Math.max(H, ...cardY.map(y => y + CH)) : 200;
   plot.style.height = bottom + "px";
   ticksBox.classList.toggle("ticks-off", state.space === "even");
 
-  // ticks
   ticksBox.textContent = "";
-  if (state.space === "scaled") {
+  if (state.space === "scaled" && n > 1) {
     for (const [v, label] of tickSpec(state.scale, min, max)) {
       let t = (v - min) / span; if (state.dir === "desc") t = 1 - t;
       const tk = el("div", "tick");
@@ -622,14 +820,12 @@ function layoutPlot(animate = true) {
     }
   }
 
-  // targets
   const targets = new Map();
   list.forEach((f, i) => targets.set(f.id, { dotY: dotY[i], cardY: cardY[i] }));
 
-  const ranks = list.map((f, i) => i + 1);
   list.forEach((f, i) => {
     const nd = nodes.get(f.id);
-    nd.rank.textContent = String(ranks[i]).padStart(2, "0");
+    nd.rank.textContent = String(i + 1).padStart(2, "0");
     const est = value(f, state.scale) == null || approx(f, state.scale);
     nd.dot.classList.toggle("est", est);
     nd.card.classList.toggle("est", est);
@@ -638,7 +834,24 @@ function layoutPlot(animate = true) {
       nd.card.querySelector(".s-" + key).classList.toggle("lead", key === state.scale);
     }
   });
-  for (const f of FILMS) if (!shown.has(f.id)) { const nd = nodes.get(f.id); nd.dot.hidden = true; nd.card.hidden = true; }
+  for (const f of ENTRIES) if (!shown.has(f.id)) {
+    const nd = nodes.get(f.id); nd.dot.hidden = true; nd.card.hidden = true;
+  }
+
+  // leader-line elements are created once per layout, then only their `d` moves
+  for (const [id, p] of paths) if (!shown.has(id)) { p.remove(); paths.delete(id); }
+  for (const id of shown) if (!paths.has(id)) {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.dataset.id = id;
+    if (id === state.selected) p.classList.add("on");
+    leaders.appendChild(p); paths.set(id, p);
+  }
+
+  plotW = plot.offsetWidth; plotH = bottom;
+  axisX = plot.querySelector(".spine").offsetLeft;
+  cardX = n ? nodes.get(list[0].id).card.offsetLeft : 0;
+  leaders.setAttribute("width", plotW); leaders.setAttribute("height", plotH);
+  leaders.setAttribute("viewBox", `0 0 ${plotW} ${plotH}`);
 
   tweenTo(targets, animate && !reduced.matches);
   renderTray();
@@ -664,53 +877,46 @@ function tweenTo(targets, animate) {
 }
 
 function paint(targets) {
-  const CH = cardH();
-  const axisX = plot.querySelector(".spine").offsetLeft;
-  let d = "";
-  const paths = [];
+  const CH = cardH(), half = CH / 2;
   for (const id of targets.keys()) {
-    const { dot, card } = nodes.get(id), a = anim.get(id);
+    const { dot, card } = nodes.get(id), a = anim.get(id), p = paths.get(id);
     dot.style.transform = `translateY(${a.dotY.toFixed(2)}px)`;
     card.style.transform = `translateY(${a.cardY.toFixed(2)}px)`;
-    const my = a.cardY + CH / 2, cx = card.offsetLeft;
+    if (!p) continue;
+    const my = a.cardY + half;
     if (Math.abs(my - a.dotY) > 1.5) {
-      paths.push([id, `M ${axisX} ${a.dotY.toFixed(2)} C ${axisX + 26} ${a.dotY.toFixed(2)}, ${cx - 26} ${my.toFixed(2)}, ${cx} ${my.toFixed(2)}`]);
-    }
-  }
-  const h = plot.offsetHeight, w = plot.offsetWidth;
-  leaders.setAttribute("width", w); leaders.setAttribute("height", h);
-  leaders.setAttribute("viewBox", `0 0 ${w} ${h}`);
-  leaders.textContent = "";
-  for (const [id, dstr] of paths) {
-    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    p.setAttribute("d", dstr); p.dataset.id = id;
-    if (id === state.selected) p.classList.add("on");
-    leaders.appendChild(p);
+      p.setAttribute("d", `M ${axisX} ${a.dotY.toFixed(2)} C ${axisX + 26} ${a.dotY.toFixed(2)}, ${cardX - 26} ${my.toFixed(2)}, ${cardX} ${my.toFixed(2)}`);
+      p.removeAttribute("hidden");
+    } else p.setAttribute("hidden", "");
   }
 }
 
 function highlight(id, on) {
   const nd = nodes.get(id); if (!nd) return;
+  const f = ENTRIES.find(x => x.id === id);
   nd.dot.classList.toggle("on", on);
-  nd.dot.style.boxShadow = on ? `0 0 0 5px var(--bg), 0 0 0 6.5px ${hue(FILMS.find(f => f.id === id))}` : "";
+  nd.dot.style.boxShadow = on ? `0 0 0 5px var(--bg), 0 0 0 6.5px ${hue(f)}` : "";
   document.querySelectorAll(`#cmp-svg path[data-id="${id}"]`).forEach(p => p.classList.toggle("on", on));
   document.querySelectorAll(`.row[data-id="${id}"]`).forEach(r => r.classList.toggle("on", on));
 }
 
-/* ── unplaced tray ─────────────────────────────────────────────────────── */
+/* ── entries with no value on the current clock ────────────────────────── */
 function renderTray() {
   const miss = unplaced(state.scale);
   const tray = $("#tray");
   if (state.view !== "plot" || !miss.length) { tray.hidden = true; return; }
   tray.hidden = false;
+  const one = miss.length === 1;
   $("#tray-note").textContent =
-    `${miss.length === 1 ? "One film" : miss.length + " films"} never state a stardate on screen, so ${miss.length === 1 ? "it has" : "they have"} no honest place on this axis. ` +
-    `Switch to the release or in-universe clock to see ${miss.length === 1 ? "it" : "them"} in line.`;
+    `${one ? "One entry" : miss.length + " entries"} never state a stardate, so ${one ? "it has" : "they have"} no honest place on this axis — ` +
+    `Enterprise, Picard, Prodigy, Strange New Worlds and Discovery's 32nd-century seasons dropped the convention altogether. ` +
+    `Switch to the release or in-universe clock to see ${one ? "it" : "them"} in line.`;
   const ul = $("#tray-list"); ul.textContent = "";
   for (const f of miss) {
     const li = el("li"), b = el("button");
     b.type = "button"; b.style.setProperty("--c", hue(f));
-    b.textContent = (f.num !== "—" ? f.num + " " : "") + f.title;
+    b.append(icon(f), document.createTextNode(
+      (f.kind === "film" && f.num !== "—" ? f.num + " " : "") + f.title + (f.kind === "tv" ? " S" + f.season : "")));
     b.addEventListener("click", () => select(f.id));
     li.appendChild(b); ul.appendChild(li);
   }
@@ -719,35 +925,46 @@ function renderTray() {
 /* ── detail panel ──────────────────────────────────────────────────────── */
 const PRIMER = `
   <p class="eyebrow">Reading the clocks</p>
-  <h2 style="font-size:24px;margin-bottom:8px">Three stardate systems, none of them compatible</h2>
-  <p class="sub" style="margin-bottom:0">Pick a film to inspect it. Until then, here is why the stardate axis looks the way it does.</p>
+  <h2 style="font-size:23px;margin-bottom:8px">Three stardate systems, and a franchise that gave up on them</h2>
+  <p class="sub" style="margin-bottom:0">Pick an entry to inspect it. Until then, here is why the stardate axis looks the way it does.</p>
   <div class="primer">
     <h3>The four-digit era</h3>
-    <p>Kirk's films run from 7412 to 9521 across fourteen in-universe years. The rate drifts; the numbers were chosen to sound plausible, not to be arithmetic.</p>
-    <span class="code">7412.6 &rarr; 9521.6 &nbsp;·&nbsp; 2273&ndash;2293</span>
+    <p>The Original Series, the animated run and Kirk's films drift from 1513 to 9521 across twenty-seven in-universe years. The rate wanders; the numbers were chosen to sound plausible, not to be arithmetic.</p>
+    <span class="code">1513.1 &rarr; 9521.6 &nbsp;·&nbsp; 2266&ndash;2293</span>
     <h3>The five-digit era</h3>
-    <p>From <em>The Next Generation</em> onward a stardate finally means something: 41000 opens 2364, and roughly a thousand units pass per year.</p>
+    <p>From <em>The Next Generation</em> onward a stardate finally means something: 41000 opens 2364, and roughly a thousand units pass per year. <em>Deep Space Nine</em>, <em>Voyager</em> and <em>Lower Decks</em> all keep the same ledger.</p>
     <span class="code">41000 + 1000 &times; (year &minus; 2364)</span>
     <h3>The Kelvin timeline</h3>
     <p>The 2009 reboot threw the ledger out and used the calendar year with the day appended. Stardate 2258.42 is simply the 42nd day of 2258.</p>
     <span class="code">2258.42 = 11 Feb 2258</span>
+    <h3>And then nothing</h3>
+    <p><em>Enterprise</em> refused stardates outright, and <em>Picard</em>, <em>Prodigy</em>, <em>Strange New Worlds</em> and late <em>Discovery</em> followed. Nearly a third of everything here has no stardate to plot.</p>
     <h3>Why the axis jumps</h3>
-    <p>Sort by stardate and the Kelvin films land <em>below</em> Kirk's, because 2258 is a smaller number than 7412 &mdash; even though they are set fifteen years earlier and were filmed thirty years later. That collision is the whole point of this page.</p>
+    <p>Sort by stardate and the Kelvin films land <em>below</em> Kirk's, because 2258 is a smaller number than 7412 &mdash; even though they are set fifteen years earlier and were filmed thirty years later. Sort by in-universe year and Discovery's last three seasons open a nine-century canyon at the top.</p>
   </div>`;
 
 function detailFor(f) {
-  const rRelease = rankMap("release").get(f.id), rUni = rankMap("universe").get(f.id), rSd = rankMap("stardate").get(f.id);
-  const sys = SYSTEMS[f.sys];
+  const rRel = rankMap("release"), rUni = rankMap("universe"), rSd = rankMap("stardate");
+  const nRel = placed("release").length, nUni = placed("universe").length, nSd = placed("stardate").length;
+  const sys = f.sys ? SYSTEMS[f.sys] : null;
   const row = (k, v, note) => `<dt>${k}</dt><dd>${v}${note ? `<small>${note}</small>` : ""}</dd>`;
+  const eyebrow = f.kind === "film"
+    ? `${f.num !== "—" ? "Film " + f.num + " · " : ""}${f.crew}`
+    : `Season ${f.season} · ${f.crew}`;
+  const sub = f.kind === "film"
+    ? `Directed by ${f.director} · ${f.streaming ? "Paramount+ release" : "Theatrical release"}`
+    : `Opens with &ldquo;${f.premiere}&rdquo;`;
+  const sdNote = f.sdNote ? f.sdNote
+    : `#${rSd.get(f.id)} of ${nSd} by stardate · ${sys ? sys.label : "no numbering system"}`;
   return `
     <div class="stripe"></div>
-    <p class="eyebrow">${f.num !== "—" ? "Film " + f.num + " · " : ""}${f.crew}</p>
+    <p class="eyebrow">${ICONS[f.kind]} ${eyebrow}</p>
     <h2>${f.title}</h2>
-    <p class="sub">Directed by ${f.director} · ${f.streaming ? "Paramount+ release" : "Theatrical release"}</p>
+    <p class="sub">${sub}</p>
     <dl>
-      ${row("Released", fmtDate(f.release), `#${rRelease} of ${FILMS.length} by release`)}
-      ${row("Stardate", fmtStardate(f.stardate), f.sdNote ? f.sdNote : `#${rSd} of ${placed("stardate").length} by stardate · ${sys.label}`)}
-      ${row("In-universe", (f.yearApprox ? "c. " : "") + f.year, f.yearNote ? f.yearNote : `#${rUni} of ${FILMS.length} in franchise chronology`)}
+      ${row("Released", fmtDate(f.release), `#${rRel.get(f.id)} of ${nRel} by release`)}
+      ${row("Stardate", fmtStardate(f.stardate), sdNote)}
+      ${row("In-universe", (f.yearApprox ? "c. " : "") + f.year, f.yearNote || `#${rUni.get(f.id)} of ${nUni} in franchise chronology`)}
       ${f.detour ? row("Also visits", f.detour, f.detourNote) : ""}
     </dl>
     <p class="blurb">${f.blurb}</p>
@@ -756,7 +973,7 @@ function detailFor(f) {
 
 function renderDetail() {
   const box = $("#detail");
-  const f = FILMS.find(x => x.id === state.selected);
+  const f = ENTRIES.find(x => x.id === state.selected);
   box.innerHTML = f ? detailFor(f) : PRIMER;
   box.style.setProperty("--c", f ? hue(f) : "var(--chrome)");
   const btn = $("#detail-clear");
@@ -771,20 +988,17 @@ function select(id) {
     p.classList.toggle("on", p.dataset.id === id);
     p.classList.toggle("off", !!id && p.dataset.id !== id);
   });
-  document.querySelectorAll("#leaders path").forEach(p => p.classList.toggle("on", p.dataset.id === id));
+  for (const [pid, p] of paths) p.classList.toggle("on", pid === id);
   renderDetail();
 }
 
 /* ── compare: paired ranks ─────────────────────────────────────────────── */
-function cmpOrder(scale) {
-  const good = placed(scale).slice().sort((a, b) => value(a, scale) - value(b, scale));
-  return good.concat(unplaced(scale));
-}
-function cmpLabel(f, scale) {
-  return scale === "release" ? f.release.slice(0, 4)
-       : scale === "stardate" ? fmtStardate(f.stardate)
-       : (f.yearApprox ? "c." : "") + f.year;
-}
+const cmpOrder = scale => placed(scale).sort(byScale(scale)).concat(unplaced(scale));
+const cmpLabel = (f, scale) =>
+  scale === "release" ? f.release.slice(0, 4)
+  : scale === "stardate" ? fmtStardate(f.stardate)
+  : (f.yearApprox ? "c." : "") + f.year;
+
 function renderCompare() {
   const A = cmpOrder(state.cmpA), B = cmpOrder(state.cmpB);
   const left = $("#cmp-left"), right = $("#cmp-right");
@@ -794,9 +1008,10 @@ function renderCompare() {
     b.style.setProperty("--c", hue(f));
     if (value(f, scale) == null || approx(f, scale)) b.classList.add("est");
     const pip = el("span", "pip"), t = el("span", "t"), v = el("span", "v");
-    t.textContent = (f.num !== "—" ? f.num + " " : "") + f.title;
+    t.textContent = (f.kind === "film" && f.num !== "—" ? f.num + " " : "")
+      + (f.kind === "tv" ? f.abbr + " S" + f.season + " · " + f.title : f.title);
     v.textContent = cmpLabel(f, scale);
-    b.append(pip, t, v);
+    b.append(pip, icon(f), t, v);
     b.addEventListener("click", () => select(f.id === state.selected ? null : f.id));
     b.addEventListener("mouseenter", () => highlight(f.id, true));
     b.addEventListener("mouseleave", () => highlight(f.id, false));
@@ -805,21 +1020,22 @@ function renderCompare() {
   A.forEach(f => left.appendChild(mkRow(f, state.cmpA)));
   B.forEach(f => right.appendChild(mkRow(f, state.cmpB)));
 
-  const moved = FILMS.filter(f => A.indexOf(f) !== B.indexOf(f)).length;
-  $("#cmp-note").innerHTML = moved
-    ? `<strong>${moved} of ${FILMS.length} films change position</strong> between ${SCALES[state.cmpA].label.toLowerCase()} and ${SCALES[state.cmpB].label.toLowerCase()}.` +
-      (state.cmpA === "stardate" || state.cmpB === "stardate"
-        ? " Films with no stated stardate sit at the foot of the stardate column, joined by a dashed line."
-        : "")
-    : `Both clocks agree on the order of all ${FILMS.length} films.`;
+  const moved = A.filter(f => A.indexOf(f) !== B.indexOf(f)).length;
+  $("#cmp-note").innerHTML = (moved
+    ? `<strong>${moved} of ${A.length} entries change position</strong> between ${SCALES[state.cmpA].label.toLowerCase()} and ${SCALES[state.cmpB].label.toLowerCase()}.`
+    : `Both clocks agree on the order of all ${A.length} entries.`)
+    + ((state.cmpA === "stardate" || state.cmpB === "stardate")
+      ? " Entries with no stated stardate sit at the foot of the stardate column, joined by a dashed line."
+      : "");
 
   requestAnimationFrame(drawCompareLines);
 }
+
 function drawCompareLines() {
   const svg = $("#cmp-svg"), mid = svg.parentElement;
   const A = cmpOrder(state.cmpA), B = cmpOrder(state.cmpB);
   const rowsL = [...$("#cmp-left").children], rowsR = [...$("#cmp-right").children];
-  if (!rowsL.length) return;
+  if (!rowsL.length) { svg.textContent = ""; return; }
   const w = mid.offsetWidth, h = $("#cmp-left").offsetHeight;
   svg.setAttribute("width", w); svg.setAttribute("height", h);
   svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
@@ -840,15 +1056,17 @@ function drawCompareLines() {
 
 /* ── table ─────────────────────────────────────────────────────────────── */
 const COLS = [
-  {key:"num",      label:"Release no.",    cls:"num",   get:f => String(rankMap("release").get(f.id)).padStart(2, "0"), sort:f => stamp(f.release)},
-  {key:"title",    label:"Film",           cls:"title", get:f => (f.num !== "—" ? f.num + " " : "") + f.title, sort:f => f.title},
-  {key:"release",  label:"Released",       cls:"num",   get:f => fmtDate(f.release), sort:f => stamp(f.release)},
-  {key:"stardate", label:"Stardate",       cls:"num",   get:f => fmtStardate(f.stardate), sort:f => f.stardate ?? Infinity},
-  {key:"universe", label:"In-universe",    cls:"num",   get:f => (f.yearApprox ? "c. " : "") + f.year, sort:f => f.year},
-  {key:"sys",      label:"Numbering",      cls:"sys",   get:null, sort:f => SYSTEMS[f.sys].label},
-  {key:"crew",     label:"Crew",           cls:"",      get:f => f.crew, sort:f => f.crew},
-  {key:"director", label:"Director",       cls:"",      get:f => f.director, sort:f => f.director}
+  {key:"num",      label:"#",                cls:"num",  sort:f => stamp(f.release)},
+  {key:"kind",     label:"Type",             cls:"kind", sort:f => f.kind},
+  {key:"title",    label:"Title",            cls:"title",get:f => (f.kind === "film" && f.num !== "—" ? f.num + " " : "") + f.title, sort:f => f.title},
+  {key:"season",   label:"Season",           cls:"num",  get:f => f.kind === "tv" ? "S" + f.season : "—", sort:f => f.kind === "tv" ? f.season : 0},
+  {key:"release",  label:"Released",         cls:"num",  get:f => fmtDate(f.release), sort:f => stamp(f.release)},
+  {key:"stardate", label:"Stardate",         cls:"num",  get:f => fmtStardate(f.stardate), sort:f => f.stardate ?? Infinity},
+  {key:"universe", label:"In-universe",      cls:"num",  get:f => (f.yearApprox ? "c. " : "") + f.year, sort:f => f.year},
+  {key:"sys",      label:"Numbering",        cls:"sys",  sort:f => f.sys ? SYSTEMS[f.sys].label : "zz"},
+  {key:"opens",    label:"Premiere episode", cls:"",     get:f => f.premiere || "—", sort:f => f.premiere || "zz"}
 ];
+
 function buildHead() {
   const tr = $("#thead-row"); tr.textContent = "";
   for (const c of COLS) {
@@ -862,12 +1080,14 @@ function buildHead() {
     tr.appendChild(th);
   }
 }
+
 function renderTable() {
-  const col = COLS.find(c => c.key === state.sortKey) || COLS[2];
-  const rows = FILMS.slice().sort((a, b) => {
+  const col = COLS.find(c => c.key === state.sortKey) || COLS[4];
+  const relRank = rankMap("release");
+  const rows = pool().sort((a, b) => {
     const x = col.sort(a), y = col.sort(b);
     const d = typeof x === "string" ? x.localeCompare(y) : x - y;
-    return state.sortDir === "desc" ? -d : d;
+    return (state.sortDir === "desc" ? -d : d) || (stamp(a.release) - stamp(b.release));
   });
   document.querySelectorAll("#thead-row th").forEach(th => {
     if (th.dataset.key === state.sortKey) th.setAttribute("aria-sort", state.sortDir === "asc" ? "ascending" : "descending");
@@ -878,13 +1098,21 @@ function renderTable() {
     const tr = el("tr"); tr.dataset.id = f.id;
     for (const c of COLS) {
       const td = el("td", c.cls);
-      if (c.key === "sys") {
+      if (c.key === "num") {
+        td.textContent = String(relRank.get(f.id)).padStart(2, "0");
+      } else if (c.key === "kind") {
+        const chip = el("span", "chip");
+        const ic = el("span", "ico"); ic.innerHTML = ICONS[f.kind];
+        chip.append(ic, document.createTextNode(KIND_LABEL[f.kind]));
+        td.appendChild(chip);
+      } else if (c.key === "sys") {
         const chip = el("span", "chip" + (f.stardate == null ? " est" : ""));
         const sw = el("span", "swatch"); sw.style.background = hue(f);
-        chip.append(sw, document.createTextNode(f.stardate == null ? "not stated" : SYSTEMS[f.sys].label));
+        chip.append(sw, document.createTextNode(
+          f.stardate != null ? SYSTEMS[f.sys].label : f.sys ? "not stated" : "none used"));
         td.appendChild(chip);
       } else if (c.key === "stardate" && f.stardate == null) {
-        td.textContent = "—"; td.style.color = "var(--ink-3)";
+        td.textContent = "—"; td.classList.add("dim");
       } else if (c.key === "title") {
         const b = el("button", "cell-btn"); b.type = "button"; b.textContent = c.get(f);
         b.addEventListener("click", e => { e.stopPropagation(); select(f.id === state.selected ? null : f.id); });
@@ -895,9 +1123,10 @@ function renderTable() {
     tr.addEventListener("click", () => select(f.id === state.selected ? null : f.id));
     tb.appendChild(tr);
   }
+  $("#table-count").textContent = `${rows.length} entries`;
 }
 
-/* ── controls ──────────────────────────────────────────────────────────── */
+/* ── views & controls ──────────────────────────────────────────────────── */
 function setView(v) {
   state.view = v;
   for (const t of document.querySelectorAll(".tab")) {
@@ -916,9 +1145,26 @@ function setView(v) {
   requestAnimationFrame(syncBarHeight);
 }
 
+function refreshAll() {
+  if (state.view === "plot") layoutPlot();
+  else if (state.view === "compare") renderCompare();
+  else renderTable();
+  renderDetail();
+}
+
 function wire() {
   document.querySelectorAll(".tab").forEach(t =>
     t.addEventListener("click", () => setView(t.id.slice(4))));
+
+  document.querySelectorAll("#ctl-medium button").forEach(b =>
+    b.addEventListener("click", () => {
+      state.medium = b.dataset.medium;
+      document.querySelectorAll("#ctl-medium button").forEach(x =>
+        x.setAttribute("aria-pressed", String(x === b)));
+      const sel = ENTRIES.find(f => f.id === state.selected);
+      if (sel && !inMedium(sel)) state.selected = null;
+      refreshAll();
+    }));
 
   document.querySelectorAll("#ctl-scale button").forEach(b =>
     b.addEventListener("click", () => {
@@ -976,11 +1222,13 @@ function wire() {
 }
 
 function syncBarHeight() {
-  const h = document.querySelector(".bar").offsetHeight;
-  document.documentElement.style.setProperty("--bar-h", h + "px");
+  document.documentElement.style.setProperty("--bar-h", document.querySelector(".bar").offsetHeight + "px");
 }
 
 /* ── go ────────────────────────────────────────────────────────────────── */
+$("#count-films").textContent = FILMS.length;
+$("#count-seasons").textContent = ENTRIES.length - FILMS.length;
+$("#count-series").textContent = SERIES.length;
 drawStars();
 buildLegend();
 buildCards();
