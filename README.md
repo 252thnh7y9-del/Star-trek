@@ -1,0 +1,56 @@
+# Stardate Plot
+
+An interactive timeline of every Star Trek film, plotted on two clocks at once:
+the **release date** we could buy a ticket, and the **stardate** spoken in the
+captain's log.
+
+Open `index.html` in any browser. No build step, no dependencies — one
+self-contained file.
+
+## Three ways to read it
+
+- **Plot** — a proportional vertical axis. Pick a clock (release date, stardate,
+  or in-universe year), and the films animate to their true positions on it.
+  Where films crowd together, cards are nudged apart and joined back to their
+  real tick by a leader line. *To scale* shows the real gaps; *Even* collapses
+  them to a ranked list. The arrow button reverses the order.
+- **Compare** — a paired-rank chart. Two clocks side by side, one line per film,
+  so the reordering between them is the picture.
+- **Table** — every field, sortable by any column.
+
+Selecting a film anywhere fills the detail panel with its rank on all three
+clocks, its numbering system, and any time travel the film gets up to. `Esc`
+clears the selection.
+
+## About the data
+
+The films use three mutually incompatible stardate systems, which is why the
+stardate axis behaves so strangely:
+
+| System | Films | Shape |
+| --- | --- | --- |
+| TOS-era | *The Motion Picture* – *The Undiscovered Country* | four digits, no fixed rate |
+| TNG-era | *Generations* – *Nemesis* | five digits, ~1000 per year, 41000 = 2364 |
+| Kelvin | *Star Trek* (2009) – *Beyond* | calendar year, then day of year |
+
+Sorted by raw stardate, the Kelvin films land *below* Kirk's — 2258 is a smaller
+number than 7412 — even though they are set fifteen years earlier and were filmed
+thirty years later.
+
+Two films (*Insurrection* and *Section 31*) never state a stardate on screen.
+Rather than inventing one, they are drawn hollow and dashed, and on the stardate
+axis they drop into a tray below the plot. *Section 31*'s in-universe year is
+likewise never stated; it is shown as `c. 2324`.
+
+Stardates are quoted as spoken. Release dates are original US theatrical
+premieres, except *Section 31*, which went straight to Paramount+.
+
+## Notes on the build
+
+- Plain HTML, CSS and JavaScript in a single file.
+- Light and dark themes, following the OS setting.
+- The three era colours were checked for colour-vision separation against both
+  backgrounds; identity is never carried by colour alone (every card and row is
+  directly labelled, and the legend is always on screen).
+- Position transitions run through one `requestAnimationFrame` tween so the dots,
+  cards and leader lines stay in sync; `prefers-reduced-motion` skips them.
